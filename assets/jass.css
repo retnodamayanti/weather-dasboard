@@ -1081,8 +1081,9 @@
   }
   
   .card {
-    border: 1px solid #1a1a1a;
+    border: 2px solid #f9f3f3;
     margin-bottom: 1rem;
+    background-color: #93d2c4;
   }
   
   .card .card-header {
