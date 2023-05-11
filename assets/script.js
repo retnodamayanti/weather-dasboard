@@ -24,14 +24,8 @@ function fetchWeatherData(city) {
           .then((forecastData) => {
             // display forecast 
             displayForecast(forecastData);
-          });
-        //   .catch((error) => {
-        //     console.log(error);
-        //   });
+          })
       });
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
   }
   
   // Function to display current weather data
@@ -68,7 +62,7 @@ function fetchWeatherData(city) {
       const forecastWindSpeed = forecastData[i].wind.speed;
   
       forecastHtml += `
-        <div class="card mb-3 p-3 text-light">
+        <div class="card mb-3 p-3 text-dark">
           <p>${forecastDate}</p>
           <img src="${forecastIcon}" alt="${forecastData[i].weather[0].description}">
           <p>Temperature: ${forecastTemp} &#8451;</p>
@@ -97,7 +91,7 @@ function handleSearchForm(event) {
       // Display city in search history list
       const cityListItem = document.createElement("button");
       cityListItem.textContent = city;
-      cityListItem.classList.add("list-group-item", "btn", "btn-block");
+      cityListItem.classList.add("list-group-item", "btn", "btn-block", "my-3");
       cityList.appendChild(cityListItem);
   
       // Add event listener to city button to fetch weather data and display results
