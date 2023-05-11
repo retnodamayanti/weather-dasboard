@@ -149,7 +149,7 @@ function saveCityList() {
       }
     }
   
-    saveCityList(); // call saveCityList after loading the city list
+    saveCityList(); 
   }
   
   window.onload = function() {
