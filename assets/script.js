@@ -7,6 +7,9 @@ var fiveDaysForecast = document.querySelector("#result-forecast");
 var cityList = document.querySelector("#city-lists");
 var cityListStorage = [];
 
+// eventlistener for search button
+searchBtn.addEventListener("submit", searchForm);
+
 // WHEN I search for a city
 // THEN I am presented with current and future conditions for that city and that city is added 
 // to the search history
@@ -64,10 +67,10 @@ function fetchWeatherData(city) {
 //   display forecast
   function displayForecast(data) {
     var forecastData = data.list;
-    let forecastHtml = "";
+    var forecastHtml = "";
   
     // loop through forecast to display 5 days
-    for (let i = 3; i < forecastData.length && i < 40; i += 8) {
+    for (var i = 3; i < forecastData.length && i < 40; i += 8) {
       var forecastDate = new Date(forecastData[i].dt * 1000).toLocaleDateString();
       var forecastIcon = `http://openweathermap.org/img/w/${forecastData[i].weather[0].icon}.png`;
       var forecastTemp = forecastData[i].main.temp;
@@ -93,35 +96,31 @@ function fetchWeatherData(city) {
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
 
-// Function to handle search form submission
+// function for search button
 function searchForm(event) {
     event.preventDefault();
     city = searchInput.value.trim();
   
-    // Check if city already exists in search history
     if (!cityListStorage.includes(city)) {
-      // Add city to search history
+      
       cityListStorage.push(city);
   
-      // Display city in search history list
       var cityListItem = document.createElement("button");
       cityListItem.textContent = city;
       cityListItem.classList.add("list-group-item", "btn", "btn-block", "my-3");
       cityList.appendChild(cityListItem);
   
-      // Add event listener to city button to fetch weather data and display results
+      // add event listener to city button 
       cityListItem.addEventListener("click", () => {
         fetchWeatherData(cityListItem.textContent);
       });
     }
   
-    // Fetch weather data and display results
     fetchWeatherData(city);
   
-    // Clear search input field
     searchInput.value = "";
   };
   
-  searchBtn.addEventListener("submit", searchForm);
+  
 
 
