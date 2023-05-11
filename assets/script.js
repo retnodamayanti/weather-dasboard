@@ -68,8 +68,8 @@ function fetchWeatherData(city) {
   function displayForecast(data) {
     var forecastData = data.list;
     var forecastHtml = "";
-  
-    // loop through forecast to display 5 days
+    console.log(forecastData);
+    // for loop the forecast to display 5 days
     for (var i = 3; i < forecastData.length && i < 40; i += 8) {
       var forecastDate = new Date(forecastData[i].dt * 1000).toLocaleDateString();
       var forecastIcon = `http://openweathermap.org/img/w/${forecastData[i].weather[0].icon}.png`;
@@ -95,14 +95,24 @@ function fetchWeatherData(city) {
   
 // WHEN I click on a city in the search history
 // THEN I am again presented with current and future conditions for that city
-
-// function for search button
-function searchForm(event) {
+function saveCityList() {
+    localStorage.setItem("cityList", JSON.stringify(cityListStorage));
+  
+    // add event listener to all city buttons
+    var cityButtons = document.querySelectorAll("#city-lists button");
+    cityButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        fetchWeatherData(button.textContent);
+      });
+    });
+  }
+  
+  // function for search button
+  function searchForm(event) {
     event.preventDefault();
-    city = searchInput.value.trim();
+    var city = searchInput.value.trim();
   
     if (!cityListStorage.includes(city)) {
-      
       cityListStorage.push(city);
   
       var cityListItem = document.createElement("button");
@@ -110,17 +120,39 @@ function searchForm(event) {
       cityListItem.classList.add("list-group-item", "btn", "btn-block", "my-3");
       cityList.appendChild(cityListItem);
   
-      // add event listener to city button 
+      // add event listener to new city button
       cityListItem.addEventListener("click", () => {
         fetchWeatherData(cityListItem.textContent);
       });
+  
+      saveCityList();
+      fetchWeatherData(city);
+  
+      searchInput.value = "";
     }
-  
-    fetchWeatherData(city);
-  
-    searchInput.value = "";
   };
   
+  function loadCityList() {
+    var storedCityList = localStorage.getItem("cityList");
+    if (storedCityList) {
+      cityListStorage = JSON.parse(storedCityList);
+      for (var i = 0; i < cityListStorage.length; i++) {
+        var cityListItem = document.createElement("button");
+        cityListItem.textContent = cityListStorage[i];
+        cityListItem.classList.add("list-group-item", "btn", "btn-block", "my-3");
+        cityList.appendChild(cityListItem);
   
-
-
+        // add event listener to city button 
+        cityListItem.addEventListener("click", () => {
+          fetchWeatherData(cityListItem.textContent);
+        });
+      }
+    }
+  
+    saveCityList(); // call saveCityList after loading the city list
+  }
+  
+  window.onload = function() {
+    loadCityList();
+  };
+  
